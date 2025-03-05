@@ -22,6 +22,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String TAG = "MovieDetailActivity";
     private static final String EXTRA_MOVIE = "movie";
@@ -32,6 +36,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     private MovieDetailViewModel viewModel;
     private TrailersAdapter trailersAdapter;
     private RecyclerView recyclerViewTrailers;
+
+    private ReviewsAdapter reviewsAdapter;
+    private RecyclerView recyclerViewReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +52,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
         initViews();
         trailersAdapter = new TrailersAdapter();
+        reviewsAdapter = new ReviewsAdapter();
+
         recyclerViewTrailers.setAdapter(trailersAdapter);
+        recyclerViewReviews.setAdapter(reviewsAdapter);
 
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
@@ -76,6 +86,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
 
 
+        viewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviews) {
+                reviewsAdapter.setReviews(reviews);
+                Log.d(TAG, "onChanged: " + reviews.toString());
+            }
+        });
+        viewModel.loadReviews(movie.getId());
     }
 
     private void initViews() {
@@ -84,6 +102,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewTitle = findViewById(R.id.textViewTitle);
         imageViewPoster = findViewById(R.id.imageViewPoster);
         recyclerViewTrailers = findViewById(R.id.recyclerViewTrailers);
+        recyclerViewReviews = findViewById(R.id.recyclerViewReviews);
     }
 
     public static Intent newIntent(Context context, Movie movie) {
