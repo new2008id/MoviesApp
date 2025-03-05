@@ -2,6 +2,7 @@ package com.example.movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -14,14 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String TAG = "MovieDetailActivity";
@@ -31,6 +30,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView textViewTitle;
     private ImageView imageViewPoster;
     private MovieDetailViewModel viewModel;
+    private TrailersAdapter trailersAdapter;
+    private RecyclerView recyclerViewTrailers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             return insets;
         });
         initViews();
-        viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
+        trailersAdapter = new TrailersAdapter();
+        recyclerViewTrailers.setAdapter(trailersAdapter);
 
+        viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
 
         Glide.with(this)
@@ -56,11 +59,22 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         viewModel.loadTrailers(movie.getId());
         viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
+
             @Override
             public void onChanged(List<Trailer> trailers) {
-                Log.d(TAG, "onChanged: " + trailers.toString());
+                trailersAdapter.setTrailers(trailers);
             }
         });
+
+        trailersAdapter.setOnTrailerClickListener(new TrailersAdapter.OnTrailerClickListener() {
+            @Override
+            public void onTrailerClick(Trailer trailer) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(trailer.getUrl()));
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -69,12 +83,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewYear = findViewById(R.id.textViewYear);
         textViewTitle = findViewById(R.id.textViewTitle);
         imageViewPoster = findViewById(R.id.imageViewPoster);
+        recyclerViewTrailers = findViewById(R.id.recyclerViewTrailers);
     }
 
     public static Intent newIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
         intent.putExtra(EXTRA_MOVIE, movie);
         return intent;
-
     }
 }
