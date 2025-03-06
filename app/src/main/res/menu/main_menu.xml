@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemHome"
+        android:title="@string/item_home"
+        />
     <item android:id="@+id/itemFavoriteMovies"
         android:title="@string/favourite_movies"
         />
-
+    <item android:id="@+id/itemSearchMovies"
+        android:title="@string/search_movies"
+        />
 </menu>

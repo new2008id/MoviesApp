@@ -1,5 +1,6 @@
 package com.example.movies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -93,7 +94,17 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.itemFavoriteMovies) {
             Intent intent = FavouriteActivity.newIntent(MainActivity.this);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.itemSearchMovies) {
+            Intent intent = SearchMovieActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.itemHome) {
+            Intent intent = MainActivity.newIntent(MainActivity.this);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, MainActivity.class);
     }
 }
