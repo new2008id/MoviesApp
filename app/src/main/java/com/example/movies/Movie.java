@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-
-
 @Entity(tableName = "favorite_movies")
 public class Movie implements Serializable {
     @PrimaryKey

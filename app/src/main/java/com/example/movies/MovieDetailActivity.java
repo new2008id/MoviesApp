@@ -6,11 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -125,6 +128,27 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.itemFavoriteMovies) {
+            Intent intent = FavouriteActivity.newIntent(MovieDetailActivity.this);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.itemSearchMovies) {
+            Intent intent = SearchMovieActivity.newIntent(MovieDetailActivity.this);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.itemHome) {
+            Intent intent = MainActivity.newIntent(MovieDetailActivity.this);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews() {

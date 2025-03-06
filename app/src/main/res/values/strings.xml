@@ -2,4 +2,8 @@
     <string name="app_name">Movies</string>
     <string name="image_view_poster">image_view_poster</string>
     <string name="favourite_movies">Избранное</string>
+    <string name="search_movies">Поиск фильмов</string>
+    <string name="name_movies">Название фильма:</string>
+    <string name="search">Поиск</string>
+    <string name="item_home">Домашняя страница</string>
 </resources>
