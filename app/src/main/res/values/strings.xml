@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="image_view_poster">image_view_poster</string>
+    <string name="favourite_movies">Избранное</string>
 </resources>

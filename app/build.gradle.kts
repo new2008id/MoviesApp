@@ -57,4 +57,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation ("com.squareup.retrofit2:adapter-rxjava3:2.9.0")
+//    implementation("androidx.room:room-rxjava2:2.4.3")
 }

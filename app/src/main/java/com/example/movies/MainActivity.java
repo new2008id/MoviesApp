@@ -2,10 +2,13 @@ package com.example.movies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -35,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         initView();
-
         moviesAdapter = new MoviesAdapter();
         recyclerViewMovies.setAdapter(moviesAdapter);
         recyclerViewMovies.setLayoutManager(new GridLayoutManager(this, 2));
@@ -78,5 +80,20 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
         progressBarLoading = findViewById(R.id.progressBarLoading);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.itemFavoriteMovies) {
+            Intent intent = FavouriteActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
